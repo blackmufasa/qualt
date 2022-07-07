@@ -527,6 +527,7 @@ def trigger_survey_pulls():
     srv_ques_order = []
     ##
     logging.info(f' for frequency:- {input_freq}')
+    time.sleep(ctr)
     exit()
     #
     ared = Redshift_Obj(host=cfg.host, database=cfg.database, user=cfg.user, password=cfg.password)
