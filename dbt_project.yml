@@ -1,0 +1,8 @@
+name: qualtrics_ingestion
+version: '0.0.1'
+profile: 'qualtrics-ingestion'
+config-version: 2
+
+models:
+  qualtrics_ingestion:
+    +materialized: table

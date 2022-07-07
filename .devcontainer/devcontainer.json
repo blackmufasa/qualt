@@ -1,0 +1,49 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.205.2/containers/python-3
+{
+	"name": "Python 3",
+	"build": {
+		"dockerfile": "../Dockerfile",
+		"context": "..",
+		"args": {"DEVCONTAINER": "1"}
+	},
+
+	// if using podman on linux you must override the workspace mount to be SELinux compatible
+
+	"workspaceMount": "",
+	"runArgs": ["--env-file", ".env", "--volume=${localWorkspaceFolder}:${containerWorkspaceFolder}:Z"],
+
+	// if using docker use this
+	// "runArgs": ["--env-file", ".env"],
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": { 
+		"python.defaultInterpreterPath": "${containerWorkspaceFolderBasename}/.venv/bin/python",
+		"python.linting.enabled": true,
+		"python.linting.pylintEnabled": true,
+		"python.formatting.autopep8Path": "${containerWorkspaceFolderBasename}/.venv/bin/autopep8",
+		"python.formatting.blackPath": "${containerWorkspaceFolderBasename}/.venv/bin/black",
+		"python.formatting.yapfPath": "${containerWorkspaceFolderBasename}/.venv/bin/yapf",
+		"python.linting.banditPath": "${containerWorkspaceFolderBasename}/.venv/bin/bandit",
+		"python.linting.flake8Path": "${containerWorkspaceFolderBasename}/.venv/bin/flake8",
+		"python.linting.mypyPath": "${containerWorkspaceFolderBasename}/.venv/bin/mypy",
+		"python.linting.pycodestylePath": "${containerWorkspaceFolderBasename}/.venv/bin/pycodestyle",
+		"python.linting.pydocstylePath": "${containerWorkspaceFolderBasename}/.venv/bin/pydocstyle",
+		"python.linting.pylintPath": "${containerWorkspaceFolderBasename}/.venv/bin/pylint"
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"kevinrose.vsc-python-indent",
+		"njqdev.vscode-python-typehint",
+		"njpwerner.autodocstring"
+	],
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": "poetry install",
+
+	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "0"
+}

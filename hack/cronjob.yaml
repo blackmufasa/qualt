@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: Template
+metadata:
+  name: cronjob-etl-template
+parameters:
+- name: DEPLOY_NAMESPACE
+- name: IMAGE
+objects:
+  - kind: CronJob
+    apiVersion: batch/v1
+    metadata:
+      name: qualtrics-ingestion
+      namespace: ${DEPLOY_NAMESPACE}
+    spec:
+      schedule: '5 12 * * *' # 8:05 EST
+      concurrencyPolicy: Forbid
+      suspend: false
+      jobTemplate:
+        metadata:
+          creationTimestamp: null
+        spec:
+          template:
+            metadata:
+              creationTimestamp: null
+            spec:
+              containers:
+                - name: qualtrics-ingestion
+                  image: image-registry.openshift-image-registry.svc:5000/${DEPLOY_NAMESPACE}/${IMAGE}
+                  args:
+                    - 'python'
+                    - qualtrics_ingestion/trigger_qualtrics_ingestion.py
+                    - '-freq'
+                    - 'd'
+                  resources:
+                    requests:
+                      memory: "4Gi"
+                      cpu: "2"
+                    limits:
+                      memory: "6Gi"
+                      cpu: "3"
+                  env:
+                    - name: REDSHIFT_USERNAME
+                      value: "rsdw_stg"
+                    - name: REDSHIFT_PASSWORD
+                      valueFrom:
+                        secretKeyRef:
+                          name: ers-secret
+                          key: rsdw_stg
+                  envFrom:
+                  - secretRef:
+                      name: qualtrics-api
+                  - secretRef:
+                      name: ers-secret
+                  - secretRef:
+                      name: rhbi-s3-secret
+                  - secretRef:
+                      name: signal-fx-secret
+                  imagePullPolicy: Always
+              restartPolicy: Never
+              terminationGracePeriodSeconds: 30
+      successfulJobsHistoryLimit: 3
+      failedJobsHistoryLimit: 3
