@@ -526,12 +526,8 @@ def trigger_survey_pulls():
     success_survey_list=[]
     srv_ques_order = []
     ##
-    #logging.info(f' for frequency:- {input_freq}')
-    #exit()
-    #
-    #print(cfg.host, cfg.database, cfg.user, cfg.password)
-    #logging.info(f'{cfg.host}, {cfg.database}, {cfg.user}, {cfg.password}')
-    #exit()
+    logging.info(f' for frequency:- {input_freq}')
+    exit()
     #
     ared = Redshift_Obj(host=cfg.host, database=cfg.database, user=cfg.user, password=cfg.password)
     with ared.create_connection().cursor() as cursor:
