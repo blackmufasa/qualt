@@ -80,9 +80,8 @@ RUN if [ "$DEVCONTAINER" != "1" ]; then \
     /usr/libexec/s2i/assemble; \
     fi
 
-## Set the default command for the resulting image
-#CMD if [ "$DEVCONTAINER" != "1" ]; then \
-#    /usr/libexec/s2i/run; \
-#    fi
+# Set the default command for the resulting image
+CMD if [ "$DEVCONTAINER" != "1" ]; then \
+    /usr/libexec/s2i/run; \
+    fi
 
-CMD ["/bin/bash"]
